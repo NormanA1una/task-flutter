@@ -1,0 +1,16 @@
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "task-manager-8062b",
+                    "configurations": {
+                        "windows": "1:1082751993522:web:72b6c0dd00d630b104ebab",
+                        "android": "1:1082751993522:android:18053aeeff54f09004ebab",
+                        "ios": "1:1082751993522:ios:e6857f29800a468104ebab"
+                    }
+                }
+            }
+        }
+    }
+}
