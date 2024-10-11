@@ -29,6 +29,7 @@ class TaskProvider with ChangeNotifier {
   void initTasksListener() {
     final user = auth.currentUser;
     if (user != null) {
+      tasksSubscription?.cancel();
       tasksSubscription = firestore
           .collection('users')
           .doc(user.uid)
@@ -100,17 +101,17 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
-  void toggleTaskCompleted(String id) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var task = tasks.firstWhere((task) => task.id == id);
+  Future<void> toggleTaskCompleted(String id) async {
+    var task = tasks.firstWhere((task) => task.id == id);
+    task.isCompleted = !task.isCompleted;
+    try {
+      await _saveTaskToFirestore(task);
+      notifyListeners();
+    } catch (e) {
+      log("Error al actualizar tarea: $e");
+      // Revertir el cambio si hay un error
       task.isCompleted = !task.isCompleted;
-      try {
-        await _saveTaskToFirestore(task);
-        notifyListeners();
-      } catch (e) {
-        log("Error al actualizar tarea: $e");
-      }
-    });
+    }
   }
 
   @override
